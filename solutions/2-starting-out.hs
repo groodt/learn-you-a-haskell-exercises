@@ -46,5 +46,5 @@ slice i k l = (take i l) ++ (drop k l)
 insertElem x k l = (take k l) ++ [x] ++ (drop k l)
 
 -- Rotate list l n places
-rotate n l = undefined
+rotate n l = take (length l) (drop n (cycle l))
 
