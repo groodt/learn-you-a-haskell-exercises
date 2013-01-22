@@ -47,7 +47,3 @@ insertElem x k l = (take k l) ++ [x] ++ (drop k l)
 
 -- Rotate list l n places
 rotate n l = take (length l) (drop n (cycle l))
-<<<<<<< HEAD
-=======
-
->>>>>>> Solution for rotate.
