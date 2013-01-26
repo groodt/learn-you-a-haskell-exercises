@@ -16,10 +16,10 @@ fib :: (Num a, Eq a) => a -> [a]
 fib 0 = [0]
 fib 1 = [1, 0]
 fib x =
-    let previousFibs = fib (x -1)
-        fibNMinusOne = previousFibs !! 0
-        fibNMinusTwo = previousFibs !! 1
-    in (fibNMinusOne + fibNMinusTwo) : previousFibs
+    let previousFibSeries = fib (x -1)
+        previousFib = head previousFibSeries
+        previousPreviousFib = head (drop 1 previousFibSeries)
+    in (previousFib + previousPreviousFib) : previousFibSeries
 
 -- This is not recursive, but have a go anyway.
 -- Create a function which takes two parameters, a number and a step
@@ -69,9 +69,10 @@ piCalc tolerance = piCalc' 1 4 tolerance 0
 
 piCalc' :: (Ord a, Fractional a, Integral b) => a -> a -> a -> b -> (a, b)
 piCalc' currentDenom currentPi tolerance steps
-                | absoluteDifference < tolerance = (newPi, newStep)
+                | acceptable absoluteDifference = (newPi, newStep)
                 | otherwise = piCalc' newDenom newPi tolerance newStep
-                where newDenom = stepReverseSign currentDenom 2
+                where acceptable x = x < tolerance
+                      newDenom = stepReverseSign currentDenom 2
                       newLeibnizTerm = 4 / newDenom
                       newPi = currentPi + newLeibnizTerm
                       absoluteDifference = abs (newPi - currentPi)
