@@ -36,8 +36,9 @@ hoSumInts = (\a b -> higherOrderSum id a b)
 -- You will also need to generalise the base case
 -- You can also define the function signature yourself, which leaves you free to define the parameters and their order
 -- Not sure what the question means. Does it mean redefine plus? Or define f such that f (+) 0 xs == sum xs ?
-higherOrderSequenceApplication = undefined
+higherOrderSequenceApplication binaryF start xs = foldr binaryF start xs
 
 -- Define a factorial method using the higherOrderSequenceAppliction
 hoFactorial :: Int -> Int
-hoFactorial = undefined
+hoFactorial x = higherOrderSequenceApplication (*) 1 [1..x]
+
