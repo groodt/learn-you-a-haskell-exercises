@@ -10,7 +10,7 @@ englishDigit 6 = "six"
 englishDigit 7 = "seven"
 englishDigit 8 = "eight"
 englishDigit 9 = "nine"
-englishDigit x = "unknown"
+englishDigit _ = "unknown"
 
 -- given a tuple, divide fst by snd, using pattern matching. 
 -- it should return undefined for division by zero
@@ -20,10 +20,6 @@ divTuple (x, y) = x / y
 
 -- if the first three numbers in a list are all zero, return True
 threeZeroList :: [Int] -> Bool
-threeZeroList [] = False
-threeZeroList (_ : []) = False
-threeZeroList (_ : _ : []) = False
-threeZeroList (first : second : third : rest)
-              | (isZero first) && (isZero second) && (isZero third) = True
-              | otherwise = False
-              where isZero x = x == 0
+threeZeroList (0 : 0 : 0 : _) = True
+threeZeroList (_) = False
+
