@@ -1,3 +1,5 @@
+import Data.List
+
 {-
  - We are going to create some types for a deck of cards
  - The cards need to have an ordering, based on the standard ranking http://en.wikipedia.org/wiki/Standard_52-card_deck#Rank_and_color
@@ -14,7 +16,10 @@
 
 data Suit = Clubs | Diamonds | Hearts | Spades deriving (Ord, Eq, Show)
 data Digit = Two | Three | Four | Five | Six | Seven | Eight | Nine | Ten | Jack | Queen | King | Ace deriving (Ord, Eq, Show)
-data Card = Card Digit Suit deriving (Ord, Eq, Show)
+data Card = Card Digit Suit deriving (Ord, Eq)
+
+instance Show Card where
+         show (Card d s) = "The " ++  (show d) ++ " of " ++ (show s)
 
 -- We should be able to provide a function which returns the higher ranked card:
 betterCard :: Card -> Card -> Card
@@ -30,10 +35,10 @@ instance Hand Card where
     play c = (Card Two Clubs) `elem` c
 
 -- Create a new Coin type
-data Coin = Heads | Tails
+data Coin = Heads | Tails deriving (Ord, Eq, Show)
 
 -- Implement Hand for Coin, where play returns true if there are ten heads in a row in the list
 instance Hand Coin where
-	play c = undefined
+	play c = [Heads, Heads, Heads, Heads, Heads, Heads, Heads, Heads, Heads, Heads] `elem` (group c)
 
 -- Have a play with implementing Hand for some other types, for instance Int and Bool
