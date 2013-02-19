@@ -35,7 +35,7 @@ instance Applicative List where
 
 -- Applicative laws
 -- pure f <*> x = fmap f x
-testApplicative = 
+testApplicativeLaws = 
                 let rule1 = (pure (+3) <*> ((Value 1) ((Value 2) ((Value 3) Empty)))) == (fmap (+3) ((Value 1) ((Value 2) ((Value 3) Empty))))
                     rule2 = (pure id <*> (Value 1 Empty)) == Value 1 Empty
                 in rule1 && rule2
@@ -54,7 +54,7 @@ testApplicative =
 -- 3.
 -- Associative
 -- (x `mappend` y) `mappend` z = x `mappend` (y `mappend` z)
-testMonoid =
+testMonoidLaws =
            let rule1 = mempty `mappend` (Value 3 Empty) == (Value 3 Empty)
                rule2 = (Value 3 Empty) `mappend` mempty == (Value 3 Empty)
                rule3 =  (((Value 1 Empty) `mappend` (Value 2 Empty)) `mappend` (Value 3 Empty)) == ((Value 1 Empty) `mappend` ((Value 2 Empty) `mappend` (Value 3 Empty)))
@@ -66,9 +66,13 @@ twoValueList = Value 10 $ Value 20 Empty
 
 -- Use <$> on the lists with a single-parameter function, such as:
 plusTwo = (+2)
+testPlusTwo = plusTwo <$> twoValueList
 
 -- Use <$> and <*> on the lists with a binary function
+testApplicativeBinaryFunction = (+) <$> twoValueList <*> twoValueList
 
 -- Create some lists of binary functions
-
+twoBinaryFunctionsList :: Num a => List (a -> a -> a)
+twoBinaryFunctionsList = (pure (+)) `mappend` (pure (*))
 -- Use <*> on the binary functions list and the number lists
+testApplicativeTwoBinaryFunctionsList = twoBinaryFunctionsList <*> twoValueList <*> (pure 1)
