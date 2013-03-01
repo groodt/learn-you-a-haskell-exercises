@@ -24,6 +24,7 @@ instance Monad Validation where
 -- 3. Associativity
 -- (m >>= f) >>= g == m >>= (\x -> f x >>= g) 
 
+testMonadLaws :: Bool
 testMonadLaws =
               let f = \n -> Success (n + 99)
                   f' = \n -> Fail "#lolrails" :: Validation Int
@@ -44,20 +45,20 @@ testMonadLaws =
  - Create a function, positiveCheck, which takes a number and returns a successful Validation if it's positive, 
  - and a failed Validation with a String message if not.
  -}
-positiveCheck :: (Num a, Ord a) => a -> Validation a
+positiveCheck :: (Num a, Ord a, Show a) => a -> Validation a
 positiveCheck x = if x >= 0 then Success x else Fail ("Negative number encountered: " ++ (show x))
 
 {-
  - Create a function, evenCheck, which returns a successful Validation if it's even,
  - and a failed Validation with a string message if it's odd
  -}
-evenCheck :: (Integral a)  =>  a -> Validation a
+evenCheck :: (Integral a, Show a)  =>  a -> Validation a
 evenCheck x = if (even x) then Success x else Fail ("Odd number encountered: " ++ (show x))
 
 {-
  - Write a function which uses positiveCheck and evenCheck to make sure a number is both positive and even
  -}
-positiveAndEvenCheck :: (Num a, Ord a, Integral a) => a -> Validation a
+positiveAndEvenCheck :: (Num a, Ord a, Integral a, Show a) => a -> Validation a
 positiveAndEvenCheck x = do
                            positiveCheck x
                            evenCheck x
