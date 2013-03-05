@@ -36,9 +36,27 @@ describe x y
 	 | otherwise = [ show(x) ++ " is equal to " ++ show(y) ]
 
 binarySearch :: (Show a, Ord a, Eq a, Monoid b) => (a -> a -> b) -> a -> [a] -> Writer b Bool
-binarySearch = undefined
+binarySearch _ _ [] = return False
+binarySearch f e xs
+             | e == pivot = do
+               tell (f e pivot)
+               return True 
+             | e < pivot = do
+               tell (f e pivot)
+               result <- binarySearch f e smaller
+               return result
+             | otherwise = do
+               tell (f e pivot)
+               result <- binarySearch f e larger
+               return result
+             where mid = (length xs) `div` 2
+                   pivot = xs !! mid
+                   smaller = take mid xs
+                   larger = drop (mid + 1) xs
 
 {-
  - Investigate what other functions instead of describe can be passed to the binary search.
  - Is it possible to provide a function, so that when we do the binary search we can return a count of how many comparisons the algorithm took?
  -}
+countSearches :: (Show a, Eq a, Ord a) => a -> a -> Sum Int
+countSearches _ _ = Sum 1
